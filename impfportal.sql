@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS termine;
 CREATE TABLE termine (
     termin_id INTEGER NOT NULL AUTO_INCREMENT,
     datum DATETIME NOT NULL,
-    bezeichnung VARCHAR(255),
+    bezeichnung VARCHAR(255) NOT NULL,
     teilnehmeranzahl INTEGER NOT NULL,
     termin_plz VARCHAR(255) NOT NULL,
     termin_straße VARCHAR(255) NOT NULL,
