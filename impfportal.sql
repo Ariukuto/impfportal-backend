@@ -1,5 +1,6 @@
 
 /* Hersteller der Impfstoffe */
+DROP TABLE IF EXISTS hersteller;
 CREATE TABLE hersteller (
     hersteller_id INTEGER NOT NULL AUTO_INCREMENT,
     hersteller_name VARCHAR(255) NOT NULL,
@@ -8,6 +9,7 @@ CREATE TABLE hersteller (
 );
 
 /* Verschiedene Impfstoffe von unterschiedlichen Herstellern */
+DROP TABLE IF EXISTS hersteller;
 CREATE TABLE impfstoffe (
     impfstoff_id INTEGER NOT NULL AUTO_INCREMENT,
     bezeichnung VARCHAR(255) NOT NULL,
@@ -19,6 +21,7 @@ CREATE TABLE impfstoffe (
 );
 
 /* Impftermine */
+DROP TABLE IF EXISTS termine;
 CREATE TABLE termine (
     termin_id INTEGER NOT NULL AUTO_INCREMENT,
     datum DATETIME NOT NULL,
@@ -33,10 +36,11 @@ CREATE TABLE termine (
 );
 
 /* Nebenwirkungen die bei Impfungen auftreten könnten */
+DROP TABLE IF EXISTS nebenwirkungen;
 CREATE TABLE nebenwirkungen (
     nebenwirkung_id INTEGER NOT NULL AUTO_INCREMENT,
     bezeichnung VARCHAR(255) NOT NULL,
-    beschreibung VARCHAR(255) NOT NULL,
+    beschreibung TEXT NOT NULL,
     fachbegriff VARCHAR(255) NOT NULL,
     impfstoff_id INTEGER NOT NULL,
     PRIMARY KEY (nebenwirkung_id),
@@ -44,6 +48,7 @@ CREATE TABLE nebenwirkungen (
 );
 
 /* impfwillige */
+DROP TABLE IF EXISTS impfwillige;
 CREATE TABLE impfwillige (
     impfwilliger_id INTEGER NOT NULL AUTO_INCREMENT,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -64,6 +69,7 @@ CREATE TABLE impfwillige (
 );
 
 /* Fragebogen */
+DROP TABLE IF EXISTS fragebogen;
 CREATE TABLE fragebogen (
     fragebogen_id INTEGER NOT NULL AUTO_INCREMENT,
     impfwilliger_id INTEGER NOT NULL,
@@ -77,7 +83,7 @@ CREATE TABLE fragebogen (
     geistige_behinderung BOOLEAN NOT NULL,
     versorgung_personen_geistige_behinderung BOOLEAN NOT NULL,
     organtransplantation BOOLEAN NOT NULL,
-    vorerkrankung_risikio INTEGER NOT NULL,
+    vorerkrankung_risiko INTEGER NOT NULL,
     bewohner_tätig_in_gemeinschaftsunterkunft BOOLEAN NOT NULL,
     enger_kontakt_zu_schwangeren BOOLEAN NOT NULL,
     enger_kontakt_zu_personen_mit_hohem_risiko BOOLEAN NOT NULL,
@@ -95,6 +101,7 @@ CREATE TABLE fragebogen (
 );
 
 /* Alle Nachrichten */
+DROP TABLE IF EXISTS messages;
 CREATE TABLE messages (
     message_id INTEGER NOT NULL AUTO_INCREMENT,
     impfwilliger_id INTEGER NOT NULL,
