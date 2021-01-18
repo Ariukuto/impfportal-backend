@@ -1,3 +1,4 @@
+
 /* Hersteller der Impfstoffe */
 CREATE TABLE hersteller (
     hersteller_id INTEGER NOT NULL AUTO_INCREMENT,
@@ -60,6 +61,22 @@ CREATE TABLE impfwillige (
     anzahl_erkrankt INTEGER DEFAULT NULL,
     anzahl_erholt INTEGER DEFAULT NULL,
     PRIMARY KEY (impfwilliger_id)
+);
+
+/* Fragebogen */
+CREATE TABLE fragebogen (
+    fragebogen_id INTEGER NOT NULL AUTO_INCREMENT,
+    impfwilliger_id INTEGER NOT NULL,
+    bewohner_von_altenheim BOOLEAN NOT NULL,
+    person_mit_expositionsrisiko BOOLEAN NOT NULL,
+    person_in_medizinischer_einrichtung BOOLEAN NOT NULL,
+    kontakt_zu_Vulnerablen_gruppen BOOLEAN NOT NULL,  
+    pflegepersonal_altenpflege BOOLEAN NOT NULL,
+    andere_tätigkeit_in_altenpflege BOOLEAN NOT NULL,
+    geistige_behinderung BOOLEAN NOT NULL,
+    tätigkeit_mit_geistig_behinderten BOOLEAN NOT NULL,
+    PRIMARY KEY (fragebogen_id),
+    FOREIGN KEY (impfwilliger_id) REFERENCES impfwillige(impfwilliger_id)
 );
 
 /* Alle Nachrichten */
