@@ -1,6 +1,6 @@
 <?php 
 
-class Impfwillige {
+class Impfwilliger {
     private $connection;
     private $table = 'impfwillige';
 
@@ -26,7 +26,7 @@ class Impfwillige {
         $this->connection = $db;
     }
 
-    // Get categories
+    // Alle Impfwilligen Datensätze bekommen
     public function getAll() {
         $query = 'SELECT * FROM ' . $this->table . ' ORDER BY listennummer DESC';
         $stmt = $this->connection->prepare($query);
@@ -34,9 +34,9 @@ class Impfwillige {
         return $stmt;
     }
 
-    // Get Single Category
+    // Einen bestimmten impfwilligen Datensatz bekommen
     public function get(){
-        $query = 'SELECT * FROM ' . $this->table . ' WHERE id = ? LIMIT 0,1';
+        $query = 'SELECT * FROM ' . $this->table . ' WHERE impfwilliger_id = ? LIMIT 0,1';
         $stmt = $this->connection->prepare($query);
         $stmt->bindParam('?', $this->impfwilliger_id);
         $stmt->execute();
@@ -59,12 +59,13 @@ class Impfwillige {
         $this->anzahl_erholt = $record['anzahl_erholt'];
     }
 
-    // Create impfwilligen
-    public function create() {
-        $query = 'INSERT INTO ' . $this->table . '(email, vorname, nachname, bday, passworthash, apikey, listennummer)
+    // Einen neuen Datensatz erstellen
+    public function create($email, $ausweisnummer, $vorname, $nachname, $bday, $passworthash, $apikey, $listennummer) {
+        $query = 'INSERT INTO ' . $this->table . '(email, $ausweisnummer, vorname, nachname, bday, passworthash, apikey, listennummer)
             VALUES (
                 email = :email,
                 vorname = :vorname,
+                ausweisnummer = :ausweisnummer
                 nachname = :nachname,
                 bday = :bday,
                 passworthash = :passworthash
@@ -74,29 +75,43 @@ class Impfwillige {
         ';
         $stmt = $this->connection->prepare($query);
         // Clean data
-        $this->name = htmlspecialchars(strip_tags($this->email));
-        $this->name = htmlspecialchars(strip_tags($this->vorname));
-        $this->name = htmlspecialchars(strip_tags($this->nachname));
-        $this->name = htmlspecialchars(strip_tags($this->bday));
-        $stmt-> bindParam(':email', $this->email);
-        $stmt-> bindParam(':vorname', $this->vorname);
-        $stmt-> bindParam(':nachname', $this->nachname);
+        $email = htmlspecialchars(strip_tags($email));
+        $ausweisnummer = htmlspecialchars(strip_tags($ausweisnummer));
+        $vorname = htmlspecialchars(strip_tags($vorname));
+        $nachname = htmlspecialchars(strip_tags($nachname));
+        $bday = htmlspecialchars(strip_tags($bday));
+        $stmt-> bindParam(':email', $email);
+        $stmt-> bindParam(':ausweisnummer', $ausweisnummer);
+        $stmt-> bindParam(':vorname', $vorname);
+        $stmt-> bindParam(':nachname', $nachname);
         $stmt-> bindParam(':bday', $this->bday);
-        $stmt-> bindParam(':passworthash', $this->passworthash);
-        $stmt-> bindParam(':apikey', $this->apikey);
-        $stmt-> bindParam(':listennummer', $this->listennummer);
+        $stmt-> bindParam(':passworthash', $passworthash);
+        $stmt-> bindParam(':apikey', $apikey);
+        $stmt-> bindParam(':listennummer', $listennummer);
         if($stmt->execute()) {
             return true;
         }
         return false;
     }
 
-    public function update($values) {
-        while($values) {
-            
-        }
+    /* Einen bestehenden Datensatz aktualisieren */
+    public function update($column, $value) {
+        $query = '
+            UPDATE ' . $this->table . 
+            ' SET :column = :value 
+            WHERE impfwilliger_id = :impfwilliger_id
+        ';
+        $stmt = $this->connection->prepare($query);
+        // Clean data
+        $column = htmlspecialchars(strip_tags($column));
+        $value = htmlspecialchars(strip_tags($value));
+        $stmt-> bindParam(':column', $column);
+        $stmt-> bindParam(':value', $value);
+        $stmt-> bindParam(':impfwilliger_id', $this->impfwilliger_id);
+        if($stmt->execute()) {
+            return true;
+        } 
+        return false;
     }
-
-    
-    
+ // ENDE
 }
