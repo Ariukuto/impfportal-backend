@@ -22,7 +22,7 @@ CREATE TABLE impfstoffe (
 CREATE TABLE termine (
     termin_id INTEGER NOT NULL AUTO_INCREMENT,
     datum DATETIME NOT NULL,
-    bezeichnung VARCHAR(255),
+    bezeichnung VARCHAR(255) NOT NULL,
     teilnehmeranzahl INTEGER NOT NULL,
     termin_plz VARCHAR(255) NOT NULL,
     termin_straße VARCHAR(255) NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE termine (
 CREATE TABLE nebenwirkungen (
     nebenwirkung_id INTEGER NOT NULL AUTO_INCREMENT,
     bezeichnung VARCHAR(255) NOT NULL,
-    beschreibung VARCHAR(255) NOT NULL,
+    beschreibung VARCHAR(1000) NOT NULL,
     fachbegriff VARCHAR(255) NOT NULL,
     impfstoff_id INTEGER NOT NULL,
     PRIMARY KEY (nebenwirkung_id),
