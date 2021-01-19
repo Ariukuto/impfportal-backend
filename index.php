@@ -7,20 +7,21 @@ error_reporting(E_ALL);
 require "./database.php";
 require "./models/Impfwilliger.php";
 
+$queryString = strstr($_SERVER['REQUEST_URI'], '?');
+$query_array = explode("&", $queryString);
+
+
 // Headers
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 
-$database = new PDO('mysql:host=localhost;dbname=impfportal', 'root', 'root');
-$sql = "SELECT * FROM impfwillige";
-$data = [];
-foreach ($database->query($sql) as $row) {
-    $data[] = $row;
+if($query_array[0] ===  "?impfwilliger") {
+    if($query_array[1] === "getall") {
+        $impfwilliger = new Impfwilliger($connection);
+        $json = json_encode($impfwilliger->getAll());
+        echo $json;
+    }
 }
-if(count($data) > 0) {
-    echo json_encode($data);
-} else {
-    echo "Es konnten keine impfwilligen gefunden werden";
-}
+
 
 
