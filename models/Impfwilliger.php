@@ -3,7 +3,6 @@
 class Impfwilliger {
     private $connection;
     private $table = 'impfwillige';
-
     public $impfwilliger_id;
     public $email;
     public $vorname;
@@ -28,16 +27,19 @@ class Impfwilliger {
 
     // Alle Impfwilligen Datensätze bekommen
     public function getAll() {
-        $query = 'SELECT * FROM ' . $this->table . ' ORDER BY listennummer DESC';
-        $stmt = $this->connection->prepare($query);
-        $stmt->execute();
-        return $stmt;
+        // $query = 'SELECT * FROM ' . $this->table . ' ORDER BY listennummer DESC';
+        $data = [];
+        $query = "SELECT * FROM impfwillige";
+        foreach ($this->connection->query($query) as $row) {
+            $data[] = $row;
+        }
+        return $data;
     }
 
     // Einen bestimmten impfwilligen Datensatz bekommen
     public function get(){
         $query = 'SELECT * FROM ' . $this->table . ' WHERE impfwilliger_id = ? LIMIT 0,1';
-        $stmt = $this->connection->prepare($query);
+        $stmt = $this->database->prepare($query);
         $stmt->bindParam('?', $this->impfwilliger_id);
         $stmt->execute();
         $record = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -73,7 +75,7 @@ class Impfwilliger {
                 listennummer = :listennummer
             );
         ';
-        $stmt = $this->connection->prepare($query);
+        $stmt = $this->database->prepare($query);
         // Clean data
         $email = htmlspecialchars(strip_tags($email));
         $ausweisnummer = htmlspecialchars(strip_tags($ausweisnummer));
@@ -101,7 +103,7 @@ class Impfwilliger {
             ' SET :column = :value 
             WHERE impfwilliger_id = :impfwilliger_id
         ';
-        $stmt = $this->connection->prepare($query);
+        $stmt = $this->database->prepare($query);
         // Clean data
         $column = htmlspecialchars(strip_tags($column));
         $value = htmlspecialchars(strip_tags($value));
@@ -115,3 +117,4 @@ class Impfwilliger {
     }
  // ENDE
 }
+
