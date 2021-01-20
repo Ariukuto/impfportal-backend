@@ -25,40 +25,28 @@ class Impfwilliger {
         $this->connection = $db;
     }
 
-    // Alle Impfwilligen Datensätze bekommen
     public function getAll() {
-        // $query = 'SELECT * FROM ' . $this->table . ' ORDER BY listennummer DESC';
-        $data = [];
-        $query = "SELECT * FROM impfwillige";
-        foreach ($this->connection->query($query) as $row) {
-            $data[] = $row;
+        $sth = $this->connection->prepare("
+            SELECT * FROM impfwillige 
+            ORDER BY listennummer
+        ");
+        $sth->execute();
+        $result = $sth->fetchAll();
+        if(!empty($result)) {
+            return $result;
         }
-        return $data;
+        return "Es konnten keine Impfwilligen gefunden werden";
     }
 
     // Einen bestimmten impfwilligen Datensatz bekommen
-    public function get(){
-        $query = 'SELECT * FROM ' . $this->table . ' WHERE impfwilliger_id = ? LIMIT 0,1';
-        $stmt = $this->database->prepare($query);
-        $stmt->bindParam('?', $this->impfwilliger_id);
-        $stmt->execute();
-        $record = $stmt->fetch(PDO::FETCH_ASSOC);
-        $this->impfwilliger_id = $record['impfwilliger_id'];
-        $this->email = $record['email'];
-        $this->vorname = $record['vorname'];
-        $this->nachname = $record['nachname'];
-        $this->ausweisnummer = $record['ausweisnummer'];
-        $this->bday = $record['bday'];
-        $this->passworthash = $record['passworthash'];
-        $this->berechtigePerson = $record['berechtigePerson'];
-        $this->berechtigtenGruppe = $record['berechtigtenGruppe'];
-        $this->apikey = $record['apikey'];
-        $this->impfwillen_status = $record['impfwillen_status'];
-        $this->krankengeschichte = $record['krankengeschichte'];
-        $this->medikamente = $record['medikamente'];
-        $this->listennummer = $record['listennummer'];
-        $this->anzahl_erkrankt = $record['anzahl_erkrankt'];
-        $this->anzahl_erholt = $record['anzahl_erholt'];
+    public function get($id) {  
+        $sth = $this->connection->prepare("SELECT * FROM {$this->table} WHERE impfwilliger_id =".$id);
+        $sth->$sth->execute();
+        $result = $sth->fetchAll();
+        if(!empty($result)) {
+            return $result;
+        }
+        return "Es konnte kein Datensatz mit der id {$id} gefunden werden";
     }
 
     // Einen neuen Datensatz erstellen
