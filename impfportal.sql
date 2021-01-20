@@ -21,7 +21,7 @@ CREATE TABLE impfstoffe (
     hersteller_id INTEGER NOT NULL,
     abklingzeit_tage INTEGER NOT NULL,
     created_at TIMESTAMP,
-    PRIMARY KEY (impfstoff_id),
+    PRIMARY KEYr (impfstoff_id),
     FOREIGN KEY (hersteller_id) REFERENCES hersteller(hersteller_id)
 );
 INSERT INTO impfstoffe(bezeichnung, impfstofftyp, hersteller_id, abklingzeit_tage)
@@ -61,6 +61,7 @@ VALUES("Kopfschmerzen", "Keine Ahnung", 1),
 ("Übelkeit/Erbrechen", "Keine Ahnung", 2),
 ("Schwindel/Müdigkeit", "Keine Ahnung", 3);
 
+
 /* impfwillige */
 DROP TABLE IF EXISTS impfwillige;
 CREATE TABLE impfwillige (
@@ -69,10 +70,7 @@ CREATE TABLE impfwillige (
     vorname VARCHAR(50) NOT NULL,
     nachname VARCHAR(50) NOT NULL,
     bday DATE NOT NULL,
-    passworthash VARCHAR(255) NOT NULL UNIQUE,
-    berechtigtePerson BOOLEAN DEFAULT NULL,
-    berechtigtenGruppe INTEGER DEFAULT NULL,
-    apikey VARCHAR(255) NOT NULL,
+    Personengruppe INTEGER NOT NULL,
     impfwillen_status BOOLEAN DEFAULT 1,
     krankengeschichte TEXT DEFAULT NULL,
     medikamente TEXT DEFAULT NULL,
@@ -81,9 +79,34 @@ CREATE TABLE impfwillige (
     anzahl_erholt INTEGER DEFAULT NULL,
     PRIMARY KEY (impfwilliger_id)
 );
-INSERT INTO impfwillige (email, vorname, nachname, bday, passworthash, berechtigtePerson, apikey, listennummer)
-VALUES ("max@muster.de", "Frederik", "Alt", '1950-02-05', "b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86", 1, "c6825b6ea41a5b5747e35cc22b2744e2881e50fd", 1),
-("jungermann@gmx.de", "Alex", "Jung", '1998-06-12', "bcad0c7b087ecb084b1e2323dd9617151d74323dd200755840a8f1949392d1f5fbedcec6f8fd718bc3184bb5f1137f4bbf120bf3d87eb066241f977823495eca", 0, "8260c6ad9ef4614045b629bf77cfb7a8e4552475636abafde701d71f261c8623", 2);
+INSERT INTO impfwillige (email, vorname, nachname, bday, personengruppe, listennummer)
+VALUES ("middleman@gmx.de", "Martin", "Middle", '1970-06-12', 4, 2),
+("jungermann@gmx.de", "Alex", "Jung", '1998-06-12', 0, 3),
+("fred@alt.de", "Frederik", "Alt", '1950-02-05', 6, 1);
+
+/* impfwillige_passworthash */
+DROP TABLE IF EXISTS impfwillige_passworthash;
+CREATE TABLE impfwillige_passworthash (
+    impfwilliger_id INTEGER NOT NULL,
+    passwordhash VARCHAR(255) NOT NULL,
+    PRIMARY KEY (impfwilliger_id),
+    FOREIGN KEY (impfwilliger_id) REFERENCES impfwillige(impfwilliger_id)
+);
+INSERT INTO impfwillige_passworthash (impfwilliger_id, passwordhash)
+VALUES (1, "b109f3bbbc244eb82441917ed06d618b9008dd09b3"), 
+(2, "0a8f1949392d1f5fbedcec6f8fd718bc3184bb5f11"),
+(3, "0a8f1949392d1f5fbedasdfasfasfs123123123adf");
+
+/* api_users */
+DROP TABLE IF EXISTS api_users;
+CREATE TABLE api_users (
+    api_user_id INTEGER NOT NULL AUTO_INCREMENT,
+    api_username VARCHAR(255) NOT NULL,
+    api_key VARCHAR(255) NOT NULL,
+    PRIMARY KEY (api_user_id)
+);
+INSERT INTO api_users (api_username, api_key)
+VALUES ("admin", "admin#13a2"), ("lra", "lra#5ed134dad3");
 
 /* Fragebogen */
 DROP TABLE IF EXISTS fragebogen;
