@@ -35,7 +35,7 @@ class Impfwilliger {
         if(!empty($result)) {
             return $result;
         }
-        return "Es konnten keine Impfwilligen gefunden werden";
+        return false;
     }
 
     // Einen bestimmten impfwilligen Datensatz bekommen
